@@ -19,7 +19,7 @@ def logistic_regression_train(X, y, lr=0.01, num_iter=1000):
 
     return theta
 
-def train_ovr(X_train, y_train, class_labels, lr=0.01, num_iter=1000):
+def train_ovr(X_train, y_train, class_labels, lr=0.005, num_iter=2000):
     classifiers = {}
     for label in class_labels:
         binary_y = (y_train == label).astype(int)
