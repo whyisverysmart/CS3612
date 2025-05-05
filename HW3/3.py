@@ -1,39 +1,38 @@
 from data_load import load_data
 import numpy as np
+from plot_pca import plot_pca
 
 def lda_train_binary(X, y):
-    X1 = X[y == 1]  # 正类样本
-    X0 = X[y == 0]  # 负类样本
+    Omega1 = X[y == 1]
+    Omega0 = X[y == 0]
 
-    mu1 = np.mean(X1, axis=0)  # 正类均值
-    mu0 = np.mean(X0, axis=0)  # 负类均值
+    miu1 = np.mean(Omega1, axis=0)
+    miu0 = np.mean(Omega0, axis=0)
 
-    S1 = np.cov(X1, rowvar=False)
-    S0 = np.cov(X0, rowvar=False)
+    S1 = np.cov(Omega1, rowvar=False)
+    S0 = np.cov(Omega0, rowvar=False)
+    Sw = Omega1.shape[0] * S1 + Omega0.shape[0] * S0
 
-    Sw = S1 + S0  # 类内散度矩阵
-
-    w = np.linalg.pinv(Sw) @ (mu1 - mu0)  # 注意使用广义逆防止Sw不可逆
-
-    # 计算偏置项 b，使得决策面更合理
-    b = -0.5 * (mu1 + mu0) @ w
-
-    return w, b
+    Sw_inv = np.linalg.pinv(Sw)
+    beta = Sw_inv @ (miu1 - miu0)
+    b = -0.5 * (miu1 + miu0) @ beta
+    return beta, b
 
 
-def train_ovr_lda(X_train, y_train, class_labels):
+def train(X_train, y_train, class_labels):
     classifiers = {}
     for label in class_labels:
         binary_y = (y_train == label).astype(int)
-        w, b = lda_train_binary(X_train, binary_y)
-        classifiers[label] = (w, b)
+        print(f"Training classifier for class {label}...")
+        beta, b = lda_train_binary(X_train, binary_y)
+        classifiers[label] = (beta, b)
     return classifiers
 
 
-def predict_ovr_lda(X, classifiers):
+def predict(X, classifiers):
     scores = {}
-    for label, (w, b) in classifiers.items():
-        scores[label] = X @ w + b  # shape = (样本数,)
+    for label, (beta, b) in classifiers.items():
+        scores[label] = X @ beta + b
 
     preds = np.array([
         max(scores, key=lambda label: scores[label][i])
@@ -44,12 +43,13 @@ def predict_ovr_lda(X, classifiers):
 
 if __name__ == "__main__":
     X_train, X_test, y_train, y_test = load_data()
-    class_labels = [1, 2, 3, 5, 6, 7]
-    assert class_labels == np.unique(y_train).tolist(), "Class labels do not match the unique values in y_train"
+    class_labels = np.unique(y_train).tolist()
 
-    classifiers = train_ovr_lda(X_train, y_train, class_labels)
+    classifiers = train(X_train, y_train, class_labels)
 
-    y_pred = predict_ovr_lda(X_test, classifiers)
-
+    y_pred = predict(X_test, classifiers)
     accuracy = np.mean(y_pred == y_test)
     print(f"Test Accuracy: {accuracy:.4f}")
+
+    W = np.array([classifiers[label][0] for label in class_labels])
+    plot_pca(X_train, y_train, W, '3.png')
