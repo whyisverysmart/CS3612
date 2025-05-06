@@ -39,7 +39,7 @@ def predict(X, classifiers):
 if __name__ == "__main__":
     X_train, X_test, y_train, y_test = load_data()
     class_labels = np.unique(y_train).tolist()
-    classifiers = train(X_train, y_train, class_labels, lr=0.01, num_iter=2000)
+    classifiers = train(X_train, y_train, class_labels, lr=0.04, num_iter=2000)
 
     y_pred = predict(X_test, classifiers)
     accuracy = np.mean(y_pred == y_test)

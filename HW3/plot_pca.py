@@ -28,18 +28,16 @@ def plot_pca(X_train, y_train, W, file_name):
         )
 
     # W vectors
-    origin = np.mean(X_2, axis=0)
     for i, label in enumerate(class_labels):
         plt.arrow(
-            origin[0], origin[1],
-            W_2[i, 0] - origin[0],
-            W_2[i, 1] - origin[1],
+            0, 0,
+            W_2[i, 0] * 2, W_2[i, 1] * 2,
             color=colors(i),
-            width=0.002,
-            head_width=0.05,
+            width=0.004,
+            head_width=0.08,
             length_includes_head=True,
         )
-        plt.text(W_2[i, 0], W_2[i, 1], f'W{int(label)}', fontsize=12, color=colors(i))
+        plt.text(W_2[i, 0] * 2, W_2[i, 1] * 2, f'W{int(label)}', fontsize=12, color=colors(i))
     plt.grid(True)
     plt.legend()
     plt.tight_layout()

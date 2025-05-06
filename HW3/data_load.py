@@ -19,4 +19,11 @@ def load_data():
 
     X_train, X_test = X[train_indices], X[test_indices]
     y_train, y_test = y[train_indices], y[test_indices]
+
+    # Normalize the data
+    mean = X_train.mean(axis=0)
+    std = X_train.std(axis=0)
+    X_train = (X_train - mean) / std
+    X_test = (X_test - mean) / std
+
     return X_train, X_test, y_train, y_test

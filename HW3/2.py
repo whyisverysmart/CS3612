@@ -47,7 +47,7 @@ if __name__ == "__main__":
     label_to_index = {label: idx for idx, label in enumerate(class_labels)}
     index_to_label = {idx: label for label, idx in label_to_index.items()}
 
-    W, loss_history = train(X_train, y_train, num_classes=6, lr=0.01, num_iter=2500)
+    W, loss_history = train(X_train, y_train, num_classes=6, lr=0.04, num_iter=3000)
     # Visualize the loss
     plot_loss(loss_history)
 

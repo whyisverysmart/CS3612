@@ -10,28 +10,28 @@
 
 |        Method       | Accuracy |
 |---------------------|----------|
-| Logistic Regression |  54.55%  |
+| Logistic Regression |  59.09%  |
 | Linear Model        |  59.09%  |
 | LDA                 |  50.00%  |
 | Logistic Loss       |  59.09%  |
 
-可以看出，Linear Model 和 Logistic Regiression trained by logistic loss 取得了最好的结果，准确率为 59.09%；LDA 准确率最低，但仍有 50%。
+可以看出，Logistic Regression，Linear Model 和 Logistic Regiression trained by logistic loss 取得了最好的结果，准确率为 59.09%；LDA 准确率最低，但仍有 50%。
 
 ## Principal Component Analysis
 
 以下是四种方法的 PCA 结果 (从左往右，从上往下，依次为 Logistic Regression, Linear Model, LDA, Logistic Loss)
 
 <div align="center">
-<img src="1.png" width="40%"/> <img src="2.png" width="40%"/>
-<img src="3.png" width="40%"/> <img src="4.png" width="40%"/>
+<img src="1.png" width="45%"/> <img src="2.png" width="45%"/>
+<img src="3.png" width="45%"/> <img src="4.png" width="45%"/>
 </div>
 
-可以看出，LDA 方法得到的 PCA 效果不好，这可能是因为 LDA 生成了非常强的决策边界，导致参数矩阵相比于训练样本显得非常大，二者放在同一张图中进行可视化会很不平衡。从其余三种方法的 PCA 可视化结果来看，参数矩阵能够较好拟合训练样本的分布，但是仍然存在一些不平衡 (如参数矩阵方向较为集中)，我认为这是由于数据集本身不平衡，或训练过拟合导致的。
+可以看出，LDA 方法得到的 PCA 效果不好，这可能是因为 LDA 生成了非常强的决策边界，与训练样本放在同一张图中进行可视化会很不平衡。从其余三种方法的 PCA 可视化结果来看，参数矩阵能够较好拟合训练样本的分布，但是由于某些类别的样本数量较少 (如类别3)，对应的箭头就会比较短。
 
 此外，以下是 Linear Model 的 Cross Entropy Loss 可视化，能够观察到 loss的下降:
 
 <div align="center">
-<img src="2_loss.png" width="40%"/>
+<img src="2_loss.png" width="50%"/>
 </div>
 
 ## Discussion
