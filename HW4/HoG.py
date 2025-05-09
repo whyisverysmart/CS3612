@@ -23,26 +23,24 @@ def preprocess_save_hog():
     X_train = np.load('X_train_sampled.npy')
     train_hog_features = []
     for image in tqdm(X_train):
-        _, hog_image = hog(image,
-                        orientations=9,
-                        pixels_per_cell=(2, 2),
-                        cells_per_block=(1, 1),
-                        visualize=True)
-        hog_vector = hog_image.reshape(-1)
-        train_hog_features.append(hog_vector)
+        arr = hog(image,
+                  orientations=9,
+                  pixels_per_cell=(2, 2),
+                  cells_per_block=(1, 1),
+                  visualize=False)
+        train_hog_features.append(arr)
     train_hog_features = np.array(train_hog_features)
     np.save('X_train_hog.npy', train_hog_features)
 
     X_test = np.load('X_test_sampled.npy')
     test_hog_features = []
     for image in tqdm(X_test):
-        _, hog_image = hog(image,
-                        orientations=9,
-                        pixels_per_cell=(2, 2),
-                        cells_per_block=(1, 1),
-                        visualize=True)
-        hog_vector = hog_image.reshape(-1)
-        test_hog_features.append(hog_vector)
+        arr = hog(image,
+                  orientations=9,
+                  pixels_per_cell=(2, 2),
+                  cells_per_block=(1, 1),
+                  visualize=False)
+        test_hog_features.append(arr)
     test_hog_features = np.array(test_hog_features)
     np.save('X_test_hog.npy', test_hog_features)
 

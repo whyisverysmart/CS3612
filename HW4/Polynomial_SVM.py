@@ -7,7 +7,7 @@ y_train = np.load('y_train_sampled.npy')
 X_test_hog = np.load('X_test_hog.npy')
 y_test = np.load('y_test_sampled.npy')
 
-classifier = SVC(kernel='poly', degree=2, C=1, gamma='scale', coef0=1)
+classifier = SVC(kernel='poly', degree=3, C=1, gamma='scale', coef0=1)
 classifier.fit(X_train_hog, y_train)
 
 y_pred = classifier.predict(X_test_hog)

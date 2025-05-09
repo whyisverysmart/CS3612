@@ -9,14 +9,13 @@ def plot_support(support_indices, support_weights):
     images = original_images[support_indices]
 
     num_sv = len(images)
-    images_per_page = 420
-    cols = 21
+    images_per_page = 484
+    cols = 22
     rows = images_per_page // cols
-    pages = 2
+    pages = 1
 
     for page in range(pages):
         fig, axes = plt.subplots(rows, cols, figsize=(28, 28))
-        # fig.suptitle(f'Support Vectors Page {page+1}', fontsize=16)
 
         for i in range(rows * cols):
             idx = page * images_per_page + i
@@ -29,7 +28,7 @@ def plot_support(support_indices, support_weights):
 
         plt.tight_layout()
         plt.subplots_adjust(top=0.95)
-        plt.savefig(f"support_vectors_page_{page+1}.png", dpi=300)
+        plt.savefig(f"support_vectors.png", dpi=300)
         plt.close()
 
 
@@ -40,18 +39,18 @@ y_test = np.load('y_test_sampled.npy')
 
 # Lower C makes the decision surface smoother, higher C aims for a more complex decision boundary
 # max_iter = 5 results in a warning, but the prformance is slightly better?
-classifier1 = SVC(kernel='linear', C=1, max_iter=5000)
-classifier2 = LinearSVC(C=0.1, max_iter=100)
+classifier1 = SVC(kernel='linear', C=0.1, max_iter=5000)
+# classifier2 = LinearSVC(C=1, max_iter=100)
 
 classifier1.fit(X_train_hog, y_train)
-classifier2.fit(X_train_hog, y_train)
+# classifier2.fit(X_train_hog, y_train)
 
 y_pred1 = classifier1.predict(X_test_hog)
-y_pred2 = classifier2.predict(X_test_hog)
+# y_pred2 = classifier2.predict(X_test_hog)
 acc1 = accuracy_score(y_test, y_pred1)
-acc2 = accuracy_score(y_test, y_pred2)
+# acc2 = accuracy_score(y_test, y_pred2)
 print(f"SVC Accuracy: {acc1:.4f}")
-print(f"Linear SVC Accuracy: {acc2:.4f}")
+# print(f"Linear SVC Accuracy: {acc2:.4f}")
 
 support_vectors = classifier1.support_vectors_
 support_indices = classifier1.support_
